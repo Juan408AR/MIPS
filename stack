@@ -8,6 +8,7 @@
 
 # the array that would hold stack elements
 arr: .word 0:100
+index: .word -4
 	
 endl:		.asciiz  "\n" 
 space:		.asciiz  " "
@@ -39,7 +40,13 @@ main:
 		#check if valid input
 		bltz $s5, invalid  
 		bgt $s5, $s4, invalid
-		beqz $s5, exit 
+		
+		#Check which options
+		beqz $s5, exit #option 0
+		#If option 1
+		#If option 2
+		#If option 3
+		#If opion 4
 		
 		
 			
@@ -47,15 +54,22 @@ exit:
 	li $v0, SYS_EXIT
 	syscall
 print_arr:
+		#$t0 = 0
 		
+	#while: beq $t0, index, main	//remember put index value into register to use it
+		#print at array[t0]
+		#$t0 += 4
+		#j while
 push:
-
+	#index += 4
+	#array[index] = input
+	#j print_array
 pop:
-
+	#if input < 0, j invalid
 max:
 
 rotate:
-
+	#temp for index 0, then array[current(0)] = array[current + 4], loop until Index limit met
 invalid:
 		li $v0, PRINT_STRING
 		la $a0, label_invalid
