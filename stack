@@ -12,7 +12,7 @@ size: .word -4		#size of the array is set to underflow because array is 'empty',
 	
 endl:		.asciiz  "\n" 
 space:		.asciiz  " "
-label_arr:	.asciiz  "Current elemnets: "
+label_arr:	.asciiz  "Current elements: "
 label_inst:	.asciiz  "Enter 1 to push, 2 to pop, 3 to find max, 4 to rotate, 0 to exit\n"
 label_invalid:	.asciiz  "Invalid option \n"
 label_empty:	.asciiz  "Array is empty \n"
@@ -56,24 +56,33 @@ exit:
 print_arr:
 		li $t1, 0
 		lw $t0, size
+		li $v0, PRINT_STRING
+		la $a0, label_arr
+		syscall
 		bgez $t0, ifNotEmpty
 		li $v0, PRINT_STRING
 		la $a0, label_empty
 		syscall 
 		j main
 	ifNotEmpty:
-		bgt $t1, $t0, main
+		bgt $t1, $t0, endOfArray
 		lw $t3, arr($t1)
 		li $v0, PRINT_INT
 		move $a0, $t3 
 		syscall
 		li $v0, PRINT_STRING
 		la $a0, space
+		syscall
 		addi $t1, $t1, 4
 		j ifNotEmpty
+	endOfArray:
+		li $v0, PRINT_STRING
+		la $a0, endl
+		syscall
+		j main
 		
 		
-push:
+push: 
 		lw $t0, size
 		addi $t0, $t0, 4
 		sw $t0, size
@@ -88,12 +97,33 @@ push:
 pop:
 		lw $t0, size #could save size in a preserved $s register but would req $sp
 		bltz $t0, empty
+		addi $t0, $t0, -4
+		sw $t0, size
+		j print_arr
 		
 		
 		
 max:
 		lw $t0, size
 		bltz $t0, empty
+		li $t2, 0
+		lw $t3, arr($t2)
+		
+		isMax:
+			move $t1, $t3  
+			addi $t2, $t2, 4
+			lw $t3, arr($t2)
+			ble $t1, $t3, curr
+			
+			bne $t2, $t0, isMax
+			
+		li $v0, PRINT_INT
+		move $a0, $t1
+		syscall
+		j print_arr
+			     
+		
+			
 		
 rotate:
 		lw $t0, size
