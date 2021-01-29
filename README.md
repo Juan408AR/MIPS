@@ -1,3 +1,2 @@
-# MIPS
-Practice with MIPS
-#Stack: a stack-like structure using an array.
+# MIPS Learning
+The purpose of this repository is to store and show projects that helped me learn and understand MIPS(Microprocessor without Interlocked Pipelined Stages).
